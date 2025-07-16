@@ -53,10 +53,10 @@
             background-color: #d1d5db;
         }
         .uploaded-image {
-            object-fit: cover;
+            object-fit: contain;
             border-radius: 0.5rem;
-            height: 100%;
-            width: 100%;
+            max-width: 100%;
+            max-height: 100%;
         }
         #loading-indicator {
             display: none;
@@ -171,8 +171,8 @@
         .pdf-preview-mode .gap-6 {
             gap: 0.75rem;
         }
-        .pdf-preview-mode .h-48 {
-            height: 120px;
+        .pdf-preview-mode .h-96 {
+            height: auto;
         }
         .pdf-preview-mode .mt-12 {
             margin-top: 1rem;
@@ -384,18 +384,6 @@
                     </div>
                 </section>
 
-                <section class="card p-6">
-                    <div class="flex items-center mb-4">
-                        <div class="step-circle">3</div>
-                        <h2 class="text-2xl font-bold text-gray-800 ml-4">Signature</h2>
-                    </div>
-                    <p class="text-gray-600 mb-6">Please provide a signature to authorize this report.</p>
-                    <div class="bg-gray-200 rounded-lg">
-                        <canvas id="signature-pad" class="w-full h-48"></canvas>
-                    </div>
-                    <button id="clear-signature" class="mt-4 bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Clear Signature</button>
-                </section>
-
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     <section class="card p-6">
                         <div class="flex items-center mb-4">
@@ -445,7 +433,6 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
     <script>
         // Initialize date field with today's date
         document.getElementById('activityDate').valueAsDate = new Date();
@@ -512,13 +499,6 @@
 
         // Set up all image sections
         ['before', 'during', 'after'].forEach(section => setupImageUpload(section));
-
-        // Signature Pad
-        const canvas = document.getElementById('signature-pad');
-        const signaturePad = new SignaturePad(canvas);
-        document.getElementById('clear-signature').addEventListener('click', () => {
-            signaturePad.clear();
-        });
 
         // Save as PDF functionality
         document.getElementById('savePdfButton').addEventListener('click', function () {
@@ -624,9 +604,6 @@
                     document.getElementById(`${section}-placeholder`).classList.remove('hidden');
                     document.getElementById(`${section}-upload`).value = '';
                 });
-
-                // Clear signature
-                signaturePad.clear();
             }
         });
     </script>
