@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Field Photo Documentation Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+        }
+        .card {
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .icon-bg {
+            background-color: #e0e7ff;
+        }
+        .header-gradient {
+            background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+        }
+        .step-circle {
+            background-color: #3b82f6;
+            color: white;
+            border-radius: 50%;
+            width: 2.5rem;
+            height: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+        .photo-placeholder {
+            background-color: #e5e7eb;
+            border: 2px dashed #9ca3af;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .photo-placeholder:hover {
+            background-color: #d1d5db;
+        }
+        .uploaded-image {
+            object-fit: cover;
+            border-radius: 0.5rem;
+            height: 100%;
+            width: 100%;
+        }
+        #loading-indicator {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #ffffff;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            background-color: #10b981;
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transform: translateX(200%);
+            transition: transform 0.3s ease-out;
+            z-index: 1000;
+        }
+        .notification.show {
+            transform: translateX(0);
+        }
+        input, textarea, select {
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            padding: 0.5rem 0.75rem;
+            width: 100%;
+            font-family: 'Inter', sans-serif;
+        }
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+        .photo-container {
+            position: relative;
+            height: 100%;
+        }
+        .delete-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .delete-btn:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
+        .pdf-preview-mode .card {
+            transform: none !important;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+        }
+        .pdf-preview-mode .card:hover {
+            transform: none !important;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+        }
+        .pdf-preview-mode {
+            padding: 0;
+            background-color: white;
+        }
+        .pdf-preview-mode .max-w-5xl {
+            max-width: 100%;
+            margin: 0;
+        }
+        .pdf-preview-mode #full-page-content {
+            padding: 20px;
+        }
+        .pdf-preview-mode .step-circle {
+            width: 1.8rem;
+            height: 1.8rem;
+            font-size: 1rem;
+        }
+        .pdf-preview-mode .text-2xl {
+            font-size: 1.25rem;
+        }
+        .pdf-preview-mode .text-xl {
+            font-size: 1.1rem;
+        }
+        .pdf-preview-mode .p-6 {
+            padding: 1rem;
+        }
+        .pdf-preview-mode .gap-8 {
+            gap: 1rem;
+        }
+        .pdf-preview-mode .gap-6 {
+            gap: 0.75rem;
+        }
+        .pdf-preview-mode .h-48 {
+            height: 120px;
+        }
+        .pdf-preview-mode .mt-12 {
+            margin-top: 1rem;
+        }
+        .pdf-preview-mode .space-y-12 > * + * {
+            margin-top: 1rem;
+        }
+        .pdf-preview-mode .space-y-4 > * + * {
+            margin-top: 0.5rem;
+        }
+        .pdf-preview-mode textarea {
+            min-height: 60px;
+        }
+        .dark {
+            background-color: #1a202c;
+            color: #e2e8f0;
+        }
+        .dark .card {
+            background-color: #2d3748;
+            color: #e2e8f0;
+        }
+        .dark .form-input, .dark .form-textarea, .dark .form-select {
+            background-color: #4a5568;
+            border-color: #718096;
+            color: #e2e8f0;
+        }
+        .dark .text-gray-800 {
+            color: #e2e8f0;
+        }
+        .dark .text-gray-600 {
+            color: #a0aec0;
+        }
+        .dark .text-gray-700 {
+            color: #cbd5e0;
+        }
+        .dark .header-gradient {
+            background: linear-gradient(90deg, #1a202c, #2d3748);
+        }
+        .dark .icon-bg {
+            background-color: #4a5568;
+        }
+        .dark .photo-placeholder {
+            background-color: #2d3748;
+            border-color: #4a5568;
+        }
+        .dark .bg-yellow-50 {
+            background-color: #4a5568;
+        }
+        .dark .text-yellow-800 {
+            color: #f6e05e;
+        }
+        .dark .text-yellow-700 {
+            color: #faf089;
+        }
+        .dark .border-yellow-200 {
+            border-color: #975a16;
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-6 md:p-8">
+
+    <div id="loading-indicator">
+        <div class="spinner"></div>
+    </div>
+
+    <div class="notification" id="pdf-notification">
+        PDF is being generated, please wait...
+    </div>
+
+    <div class="max-w-5xl mx-auto">
+        <div class="flex flex-wrap justify-center gap-4 mb-8">
+            <button id="theme-toggle" class="bg-gray-800 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105">
+                Toggle Dark Mode
+            </button>
+            <button id="savePdfButton" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105">
+                Save as PDF
+            </button>
+            <button id="clearFormButton" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105">
+                Clear Form
+            </button>
+        </div>
+
+        <div id="full-page-content">
+            <header class="text-center mb-8 p-6 header-gradient text-white rounded-xl shadow-lg flex items-center justify-center">
+                <img src="https://i.imgur.com/tOSqsQF.jpeg" alt="Company Logo" class="h-16 mr-4">
+                <div>
+                    <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight">A Guide to Perfect Field Photo Documentation</h1>
+                    <p class="mt-2 text-lg text-blue-100">Standardising photo reports for quality and completeness.</p>
+                </div>
+            </header>
+
+            <main class="space-y-12">
+                <section class="card p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="step-circle">1</div>
+                        <h2 class="text-2xl font-bold text-gray-800 ml-4">Core Activity Information</h2>
+                    </div>
+                    <p class="text-gray-600 mb-6">Start by gathering all the essential details for the report. Complete data is the foundation of a successful report.</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="flex items-start space-x-4">
+                            <div class="icon-bg p-3 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></div>
+                            <div class="w-full">
+                                <label class="font-semibold text-gray-700 block mb-1">Work Order / Project No.</label>
+                                <input type="text" id="workOrder" placeholder="e.g., WO12345678" class="form-input">
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <div class="icon-bg p-3 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></div>
+                            <div class="w-full">
+                                <label class="font-semibold text-gray-700 block mb-1">Activity Title</label>
+                                <input type="text" id="activityTitle" placeholder="e.g., Repair of cooling system leak" class="form-input">
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <div class="icon-bg p-3 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
+                            <div class="w-full">
+                                <label class="font-semibold text-gray-700 block mb-1">Responsible Department</label>
+                                <select id="department" class="form-select">
+                                    <option value="">Select Department</option>
+                                    <option>Maintenance - Mechanical</option>
+                                    <option>Maintenance - Electrical</option>
+                                    <option>Operations</option>
+                                    <option>Quality Control</option>
+                                    <option>Safety</option>
+                                    <option>Engineering</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <div class="icon-bg p-3 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg></div>
+                            <div class="w-full">
+                                <label class="font-semibold text-gray-700 block mb-1">Date of Activity</label>
+                                <input type="date" id="activityDate" class="form-input">
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <div class="icon-bg p-3 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></div>
+                            <div class="w-full">
+                                <label class="font-semibold text-gray-700 block mb-1">Exact Location</label>
+                                <input type="text" id="location" placeholder="e.g., Admin Building, Basement" class="form-input">
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <div class="icon-bg p-3 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div>
+                            <div class="w-full">
+                                <label class="font-semibold text-gray-700 block mb-1">Employee / Photographer</label>
+                                <input type="text" id="employeeName" placeholder="Your Name" class="form-input">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="card p-6">
+                    <div class="flex items-center mb-6">
+                        <div class="step-circle">2</div>
+                        <h2 class="text-2xl font-bold text-gray-800 ml-4">The Photo Story: Before, During, After</h2>
+                    </div>
+                    <p class="text-gray-600 mb-6">Capture photos in a logical sequence to tell the complete story of the work performed.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="flex flex-col space-y-4">
+                            <h3 class="text-xl font-bold text-center text-blue-600">BEFORE</h3>
+                            <div class="photo-container">
+                                <div class="photo-placeholder w-full h-96 rounded-lg flex flex-col items-center justify-center" id="before-placeholder">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                                    <p class="text-gray-500 mt-2">Click to upload image</p>
+                                </div>
+                                <img class="uploaded-image hidden" id="before-image" alt="Before Photo">
+                                <input type="file" accept="image/*" class="hidden" id="before-upload">
+                                <div class="delete-btn hidden" id="before-delete">✕</div>
+                            </div>
+                            <div>
+                                <label class="font-semibold text-gray-700 block mb-1">Description:</label>
+                                <textarea id="before-desc" class="form-textarea" rows="3" placeholder="e.g., 'Water leak from main connection of chiller pump CH-P-02.'"></textarea>
+                            </div>
+                        </div>
+                        <div class="flex flex-col space-y-4">
+                            <h3 class="text-xl font-bold text-center text-blue-600">DURING</h3>
+                            <div class="photo-container">
+                                <div class="photo-placeholder w-full h-96 rounded-lg flex flex-col items-center justify-center" id="during-placeholder">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                                    <p class="text-gray-500 mt-2">Click to upload image</p>
+                                </div>
+                                <img class="uploaded-image hidden" id="during-image" alt="During Photo">
+                                <input type="file" accept="image/*" class="hidden" id="during-upload">
+                                <div class="delete-btn hidden" id="during-delete">✕</div>
+                            </div>
+                            <div>
+                                <label class="font-semibold text-gray-700 block mb-1">Description:</label>
+                                <textarea id="during-desc" class="form-textarea" rows="3" placeholder="e.g., 'Team dismantling faulty connection and preparing new one.'"></textarea>
+                            </div>
+                        </div>
+                        <div class="flex flex-col space-y-4">
+                            <h3 class="text-xl font-bold text-center text-blue-600">AFTER</h3>
+                            <div class="photo-container">
+                                <div class="photo-placeholder w-full h-96 rounded-lg flex flex-col items-center justify-center" id="after-placeholder">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                                    <p class="text-gray-500 mt-2">Click to upload image</p>
+                                </div>
+                                <img class="uploaded-image hidden" id="after-image" alt="After Photo">
+                                <input type="file" accept="image/*" class="hidden" id="after-upload">
+                                <div class="delete-btn hidden" id="after-delete">✕</div>
+                            </div>
+                            <div>
+                                <label class="font-semibold text-gray-700 block mb-1">Description:</label>
+                                <textarea id="after-desc" class="form-textarea" rows="3" placeholder="e.g., 'New connection installed. Area clean and dry after leak test.'"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="card p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="step-circle">3</div>
+                        <h2 class="text-2xl font-bold text-gray-800 ml-4">Signature</h2>
+                    </div>
+                    <p class="text-gray-600 mb-6">Please provide a signature to authorize this report.</p>
+                    <div class="bg-gray-200 rounded-lg">
+                        <canvas id="signature-pad" class="w-full h-48"></canvas>
+                    </div>
+                    <button id="clear-signature" class="mt-4 bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Clear Signature</button>
+                </section>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <section class="card p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="step-circle bg-green-500">!</div>
+                            <h2 class="text-2xl font-bold text-gray-800 ml-4">Golden Rules for Photos</h2>
+                        </div>
+                        <ul class="space-y-4">
+                            <li class="flex items-start space-x-3">
+                                <svg class="w-6 h-6 text-green-500 flex-shrink-0 mt-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                                <div><strong class="text-gray-700">Quality:</strong> Ensure photos are clear, in-focus, and well-lit.</div>
+                            </li>
+                            <li class="flex items-start space-x-3">
+                                <svg class="w-6 h-6 text-green-500 flex-shrink-0 mt-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                                <div><strong class="text-gray-700">Context:</strong> Include fixed landmarks (columns, doors) to identify the exact location.</div>
+                            </li>
+                            <li class="flex items-start space-x-3">
+                                <svg class="w-6 h-6 text-green-500 flex-shrink-0 mt-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                                <div><strong class="text-gray-700">Sequence:</strong> Always capture photos in the logical "Before, During, After" order.</div>
+                            </li>
+                        </ul>
+                    </section>
+
+                    <section class="card p-6 bg-yellow-50 border border-yellow-200">
+                        <div class="flex items-center mb-4">
+                            <div class="step-circle bg-yellow-500">?</div>
+                            <h2 class="text-2xl font-bold text-gray-800 ml-4">Additional Observations</h2>
+                        </div>
+                        <p class="text-yellow-800 mb-4">Use this for unexpected or important findings.</p>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="font-semibold text-yellow-700 block mb-1">Type:</label>
+                                <input type="text" id="observationType" placeholder="Safety issue, new fault, material quality, etc." class="form-input">
+                            </div>
+                            <div>
+                                <label class="font-semibold text-yellow-700 block mb-1">Description:</label>
+                                <textarea id="observationDesc" class="form-textarea" rows="4" placeholder="e.g., 'Corrosion found on adjacent pump base. Raised preventive work order.'"></textarea>
+                            </div>
+                            <p class="text-yellow-700"><strong class="font-semibold">Purpose:</strong> To proactively document potential future issues.</p>
+                        </div>
+                    </section>
+                </div>
+            </main>
+
+            <footer class="text-center mt-12 text-gray-500 text-sm" id="footer">
+                <p>Clear photos and complete data are the foundation of a successful report.</p>
+            </footer>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
+    <script>
+        // Initialize date field with today's date
+        document.getElementById('activityDate').valueAsDate = new Date();
+
+        // Dark Mode Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark');
+        });
+
+        // Helper function to sanitize filenames
+        const sanitizeFilename = (str) => {
+            return str.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+        };
+
+        // Image upload functionality
+        let photoCounter = 0;
+        const setupImageUpload = (section) => {
+            const placeholder = document.getElementById(`${section}-placeholder`);
+            const imageElement = document.getElementById(`${section}-image`);
+            const fileInput = document.getElementById(`${section}-upload`);
+            const deleteBtn = document.getElementById(`${section}-delete`);
+            const photoNumber = document.createElement('div');
+            photoNumber.className = 'absolute top-2 left-2 bg-black bg-opacity-50 text-white rounded-full h-8 w-8 flex items-center justify-center';
+            placeholder.parentElement.appendChild(photoNumber);
+
+            // Open file dialog when placeholder is clicked
+            placeholder.addEventListener('click', () => {
+                fileInput.click();
+            });
+
+            // Handle file selection
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files && e.target.files[0]) {
+                    const reader = new FileReader();
+
+                    reader.onload = function(event) {
+                        // Hide placeholder, show image and delete button
+                        placeholder.classList.add('hidden');
+                        imageElement.src = event.target.result;
+                        imageElement.classList.remove('hidden');
+                        deleteBtn.classList.remove('hidden');
+                        photoCounter++;
+                        photoNumber.innerText = photoCounter;
+                    }
+
+                    reader.readAsDataURL(e.target.files[0]);
+                }
+            });
+
+            // Delete image functionality
+            deleteBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                // Reset to placeholder state
+                imageElement.src = '';
+                imageElement.classList.add('hidden');
+                deleteBtn.classList.add('hidden');
+                placeholder.classList.remove('hidden');
+                fileInput.value = '';
+                photoCounter--;
+                photoNumber.innerText = '';
+            });
+        };
+
+        // Set up all image sections
+        ['before', 'during', 'after'].forEach(section => setupImageUpload(section));
+
+        // Signature Pad
+        const canvas = document.getElementById('signature-pad');
+        const signaturePad = new SignaturePad(canvas);
+        document.getElementById('clear-signature').addEventListener('click', () => {
+            signaturePad.clear();
+        });
+
+        // Save as PDF functionality
+        document.getElementById('savePdfButton').addEventListener('click', function () {
+            const element = document.getElementById('full-page-content');
+            const loadingIndicator = document.getElementById('loading-indicator');
+            const notification = document.getElementById('pdf-notification');
+            const footer = document.getElementById('footer');
+
+            // Validate required fields
+            const department = document.getElementById('department').value;
+            const employeeName = document.getElementById('employeeName').value;
+            const activityDate = document.getElementById('activityDate').value;
+            const workOrder = document.getElementById('workOrder').value;
+            const activityTitle = document.getElementById('activityTitle').value;
+            const location = document.getElementById('location').value;
+
+            if (!department || !employeeName || !activityDate || !workOrder || !activityTitle || !location) {
+                alert('Please fill in all required fields before generating PDF');
+                return;
+            }
+
+            // Format date for filename (YYYYMMDD)
+            const formattedDate = activityDate.replace(/-/g, '');
+
+            // Sanitize department and employee name for filename
+            const sanitizedDept = sanitizeFilename(department.split(' - ')[0] || department);
+            const sanitizedEmployee = sanitizeFilename(employeeName.split(' ')[0]);
+
+            // Create dynamic filename
+            const filename = `${formattedDate}_${sanitizedDept}_${sanitizedEmployee}`;
+
+            // Add footer to PDF
+            footer.innerText = `${formattedDate} | ${department} | ${employeeName}`;
+
+            // Show loading indicator and notification
+            loadingIndicator.style.display = 'flex';
+            notification.classList.add('show');
+
+            // Apply PDF preview styling
+            element.classList.add('pdf-preview-mode');
+
+            // Set PDF options
+            const options = {
+                margin: 5,
+                filename: `${filename}.pdf`,
+                image: { type: 'jpeg', quality: 0.95 },
+                pagebreak: { mode: 'avoid-all' }, // This is the key change to fit content on a single page
+                html2canvas: {
+                    scale: 2,
+                    useCORS: true,
+                    logging: false,
+                    windowHeight: element.scrollHeight
+                },
+                jsPDF: {
+                    unit: 'mm',
+                    format: 'a4',
+                    orientation: 'portrait'
+                }
+            };
+
+            // Generate PDF
+            html2pdf()
+                .set(options)
+                .from(element)
+                .save()
+                .then(() => {
+                    // Hide loading indicator and notification
+                    loadingIndicator.style.display = 'none';
+                    notification.classList.remove('show');
+
+                    // Remove PDF preview styling
+                    element.classList.remove('pdf-preview-mode');
+                    footer.innerText = 'Clear photos and complete data are the foundation of a successful report.';
+                })
+                .catch(error => {
+                    console.error('PDF generation failed:', error);
+                    loadingIndicator.style.display = 'none';
+                    notification.classList.remove('show');
+                    element.classList.remove('pdf-preview-mode');
+                    footer.innerText = 'Clear photos and complete data are the foundation of a successful report.';
+                    alert('PDF generation failed. Please try again.');
+                });
+        });
+
+        // Clear form functionality
+        document.getElementById('clearFormButton').addEventListener('click', function() {
+            if(confirm('Are you sure you want to clear all form data?')) {
+                // Reset input fields
+                document.querySelectorAll('input, textarea, select').forEach(element => {
+                    if(element.type !== 'button') {
+                        element.value = '';
+                    }
+                });
+
+                // Reset date to today
+                document.getElementById('activityDate').valueAsDate = new Date();
+
+                // Reset images
+                ['before', 'during', 'after'].forEach(section => {
+                    document.getElementById(`${section}-image`).src = '';
+                    document.getElementById(`${section}-image`).classList.add('hidden');
+                    document.getElementById(`${section}-delete`).classList.add('hidden');
+                    document.getElementById(`${section}-placeholder`).classList.remove('hidden');
+                    document.getElementById(`${section}-upload`).value = '';
+                });
+
+                // Clear signature
+                signaturePad.clear();
+            }
+        });
+    </script>
+
+</body>
+</html>
