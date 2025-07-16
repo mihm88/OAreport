@@ -253,9 +253,145 @@
             <button id="clearFormButton" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105">
                 Clear Form
             </button>
+            <button id="previewButton" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105">
+                Preview
+            </button>
+            <select id="language-switcher" class="bg-gray-800 text-white font-bold py-3 px-6 rounded-lg shadow-md">
+                <option value="en">English</option>
+                <option value="ar">العربية</option>
+            </select>
         </div>
 
-        <div id="full-page-content">
+        <div id="full-page-content" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div id="form-container">
+                <header class="text-center mb-8 p-6 header-gradient text-white rounded-xl shadow-lg flex items-center justify-center">
+                    <img src="https://i.imgur.com/tOSqsQF.jpeg" alt="Company Logo" class="h-16 mr-4">
+                    <div>
+                        <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight" data-translate="A Guide to Perfect Field Photo Documentation">A Guide to Perfect Field Photo Documentation</h1>
+                        <p class="mt-2 text-lg text-blue-100" data-translate="Standardising photo reports for quality and completeness.">Standardising photo reports for quality and completeness.</p>
+                    </div>
+                </header>
+                <main class="space-y-12">
+                    <section class="card p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="step-circle">1</div>
+                            <h2 class="text-2xl font-bold text-gray-800 ml-4" data-translate="Core Activity Information">Core Activity Information</h2>
+                        </div>
+                        <p class="text-gray-600 mb-6" data-translate="Start by gathering all the essential details for the report. Complete data is the foundation of a successful report.">Start by gathering all the essential details for the report. Complete data is the foundation of a successful report.</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <div class="flex items-start space-x-4">
+                                <div class="icon-bg p-3 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></div>
+                                <div class="w-full">
+                                    <label class="font-semibold text-gray-700 block mb-1" data-translate="Work Order / Project No.">Work Order / Project No.</label>
+                                    <input type="text" id="workOrder" placeholder="e.g., WO12345678" class="form-input">
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-4">
+                                <div class="icon-bg p-3 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></div>
+                                <div class="w-full">
+                                    <label class="font-semibold text-gray-700 block mb-1" data-translate="Activity Title">Activity Title</label>
+                                    <input type="text" id="activityTitle" placeholder="e.g., Repair of cooling system leak" class="form-input">
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-4">
+                                <div class="icon-bg p-3 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
+                                <div class="w-full">
+                                    <label class="font-semibold text-gray-700 block mb-1" data-translate="Responsible Department">Responsible Department</label>
+                                    <select id="department" class="form-select">
+                                        <option value="">Select Department</option>
+                                        <option>Maintenance - Mechanical</option>
+                                        <option>Maintenance - Electrical</option>
+                                        <option>Operations</option>
+                                        <option>Quality Control</option>
+                                        <option>Safety</option>
+                                        <option>Engineering</option>
+                                        <option>Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-4">
+                                <div class="icon-bg p-3 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg></div>
+                                <div class="w-full">
+                                    <label class="font-semibold text-gray-700 block mb-1" data-translate="Date of Activity">Date of Activity</label>
+                                    <input type="date" id="activityDate" class="form-input">
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-4">
+                                <div class="icon-bg p-3 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></div>
+                                <div class="w-full">
+                                    <label class="font-semibold text-gray-700 block mb-1" data-translate="Exact Location">Exact Location</label>
+                                    <input type="text" id="location" placeholder="e.g., Admin Building, Basement" class="form-input">
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-4">
+                                <div class="icon-bg p-3 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div>
+                                <div class="w-full">
+                                    <label class="font-semibold text-gray-700 block mb-1" data-translate="Employee / Photographer">Employee / Photographer</label>
+                                    <input type="text" id="employeeName" placeholder="Your Name" class="form-input">
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="card p-6">
+                        <div class="flex items-center mb-6">
+                            <div class="step-circle">2</div>
+                            <h2 class="text-2xl font-bold text-gray-800 ml-4" data-translate="The Photo Story: Before, During, After">The Photo Story: Before, During, After</h2>
+                        </div>
+                        <p class="text-gray-600 mb-6" data-translate="Capture photos in a logical sequence to tell the complete story of the work performed.">Capture photos in a logical sequence to tell the complete story of the work performed.</p>
+                        <div id="photo-sections-container" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            <!-- Photo sections will be added here dynamically -->
+                        </div>
+                        <button id="add-photo-section" class="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" data-translate="Add Photo">Add Photo</button>
+                    </section>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <section class="card p-6">
+                            <div class="flex items-center mb-4">
+                                <div class="step-circle bg-green-500">!</div>
+                                <h2 class="text-2xl font-bold text-gray-800 ml-4" data-translate="Golden Rules for Photos">Golden Rules for Photos</h2>
+                            </div>
+                            <ul class="space-y-4">
+                                <li class="flex items-start space-x-3">
+                                    <svg class="w-6 h-6 text-green-500 flex-shrink-0 mt-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                                    <div><strong class="text-gray-700" data-translate="Quality:">Quality:</strong> <span data-translate="Ensure photos are clear, in-focus, and well-lit.">Ensure photos are clear, in-focus, and well-lit.</span></div>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <svg class="w-6 h-6 text-green-500 flex-shrink-0 mt-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                                    <div><strong class="text-gray-700" data-translate="Context:">Context:</strong> <span data-translate="Include fixed landmarks (columns, doors) to identify the exact location.">Include fixed landmarks (columns, doors) to identify the exact location.</span></div>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <svg class="w-6 h-6 text-green-500 flex-shrink-0 mt-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                                    <div><strong class="text-gray-700" data-translate="Sequence:">Sequence:</strong> <span data-translate="Always capture photos in the logical &quot;Before, During, After&quot; order.">Always capture photos in the logical "Before, During, After" order.</span></div>
+                                </li>
+                            </ul>
+                        </section>
+                        <section class="card p-6 bg-yellow-50 border border-yellow-200">
+                            <div class="flex items-center mb-4">
+                                <div class="step-circle bg-yellow-500">?</div>
+                                <h2 class="text-2xl font-bold text-gray-800 ml-4" data-translate="Additional Observations">Additional Observations</h2>
+                            </div>
+                            <p class="text-yellow-800 mb-4" data-translate="Use this for unexpected or important findings.">Use this for unexpected or important findings.</p>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="font-semibold text-yellow-700 block mb-1" data-translate="Type:">Type:</label>
+                                    <input type="text" id="observationType" placeholder="Safety issue, new fault, material quality, etc." class="form-input">
+                                </div>
+                                <div>
+                                    <label class="font-semibold text-yellow-700 block mb-1" data-translate="Description:">Description:</label>
+                                    <textarea id="observationDesc" class="form-textarea" rows="4" placeholder="e.g., 'Corrosion found on adjacent pump base. Raised preventive work order.'"></textarea>
+                                </div>
+                                <p class="text-yellow-700"><strong class="font-semibold" data-translate="Purpose:">Purpose:</strong> <span data-translate="To proactively document potential future issues.">To proactively document potential future issues.</span></p>
+                            </div>
+                        </section>
+                    </div>
+                </main>
+                <footer class="text-center mt-12 text-gray-500 text-sm" id="footer">
+                    <p data-translate="Clear photos and complete data are the foundation of a successful report.">Clear photos and complete data are the foundation of a successful report.</p>
+                </footer>
+            </div>
+            <div id="preview-container" class="hidden">
+                <iframe id="preview-iframe" class="w-full h-full"></iframe>
+            </div>
+        </div>
             <header class="text-center mb-8 p-6 header-gradient text-white rounded-xl shadow-lg flex items-center justify-center">
                 <img src="https://i.imgur.com/tOSqsQF.jpeg" alt="Company Logo" class="h-16 mr-4">
                 <div>
@@ -332,56 +468,10 @@
                         <h2 class="text-2xl font-bold text-gray-800 ml-4">The Photo Story: Before, During, After</h2>
                     </div>
                     <p class="text-gray-600 mb-6">Capture photos in a logical sequence to tell the complete story of the work performed.</p>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <div class="flex flex-col space-y-4">
-                            <h3 class="text-xl font-bold text-center text-blue-600">BEFORE</h3>
-                            <div class="photo-container">
-                                <div class="photo-placeholder w-full h-96 rounded-lg flex flex-col items-center justify-center" id="before-placeholder">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
-                                    <p class="text-gray-500 mt-2">Click to upload image</p>
-                                </div>
-                                <img class="uploaded-image hidden" id="before-image" alt="Before Photo">
-                                <input type="file" accept="image/*" class="hidden" id="before-upload">
-                                <div class="delete-btn hidden" id="before-delete">✕</div>
-                            </div>
-                            <div>
-                                <label class="font-semibold text-gray-700 block mb-1">Description:</label>
-                                <textarea id="before-desc" class="form-textarea" rows="3" placeholder="e.g., 'Water leak from main connection of chiller pump CH-P-02.'"></textarea>
-                            </div>
-                        </div>
-                        <div class="flex flex-col space-y-4">
-                            <h3 class="text-xl font-bold text-center text-blue-600">DURING</h3>
-                            <div class="photo-container">
-                                <div class="photo-placeholder w-full h-96 rounded-lg flex flex-col items-center justify-center" id="during-placeholder">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
-                                    <p class="text-gray-500 mt-2">Click to upload image</p>
-                                </div>
-                                <img class="uploaded-image hidden" id="during-image" alt="During Photo">
-                                <input type="file" accept="image/*" class="hidden" id="during-upload">
-                                <div class="delete-btn hidden" id="during-delete">✕</div>
-                            </div>
-                            <div>
-                                <label class="font-semibold text-gray-700 block mb-1">Description:</label>
-                                <textarea id="during-desc" class="form-textarea" rows="3" placeholder="e.g., 'Team dismantling faulty connection and preparing new one.'"></textarea>
-                            </div>
-                        </div>
-                        <div class="flex flex-col space-y-4">
-                            <h3 class="text-xl font-bold text-center text-blue-600">AFTER</h3>
-                            <div class="photo-container">
-                                <div class="photo-placeholder w-full h-96 rounded-lg flex flex-col items-center justify-center" id="after-placeholder">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
-                                    <p class="text-gray-500 mt-2">Click to upload image</p>
-                                </div>
-                                <img class="uploaded-image hidden" id="after-image" alt="After Photo">
-                                <input type="file" accept="image/*" class="hidden" id="after-upload">
-                                <div class="delete-btn hidden" id="after-delete">✕</div>
-                            </div>
-                            <div>
-                                <label class="font-semibold text-gray-700 block mb-1">Description:</label>
-                                <textarea id="after-desc" class="form-textarea" rows="3" placeholder="e.g., 'New connection installed. Area clean and dry after leak test.'"></textarea>
-                            </div>
-                        </div>
+                    <div id="photo-sections-container" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <!-- Photo sections will be added here dynamically -->
                     </div>
+                    <button id="add-photo-section" class="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add Photo</button>
                 </section>
 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -433,6 +523,7 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/exif-js"></script>
     <script>
         // Initialize date field with today's date
         document.getElementById('activityDate').valueAsDate = new Date();
@@ -464,6 +555,28 @@
                 fileInput.click();
             });
 
+            // Add drag and drop listeners
+            placeholder.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                placeholder.classList.add('bg-gray-300');
+            });
+
+            placeholder.addEventListener('dragleave', (e) => {
+                e.preventDefault();
+                placeholder.classList.remove('bg-gray-300');
+            });
+
+            placeholder.addEventListener('drop', (e) => {
+                e.preventDefault();
+                placeholder.classList.remove('bg-gray-300');
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    fileInput.files = files;
+                    const changeEvent = new Event('change', { bubbles: true });
+                    fileInput.dispatchEvent(changeEvent);
+                }
+            });
+
             // Handle file selection
             fileInput.addEventListener('change', (e) => {
                 if (e.target.files && e.target.files[0]) {
@@ -477,6 +590,26 @@
                         deleteBtn.classList.remove('hidden');
                         photoCounter++;
                         photoNumber.innerText = photoCounter;
+
+                        EXIF.getData(e.target.files[0], function() {
+                            const dateTime = EXIF.getTag(this, "DateTimeOriginal");
+                            if (dateTime) {
+                                const [date, time] = dateTime.split(' ');
+                                const [year, month, day] = date.split(':');
+                                document.getElementById('activityDate').value = `${year}-${month}-${day}`;
+                            }
+
+                            const lat = EXIF.getTag(this, "GPSLatitude");
+                            const lon = EXIF.getTag(this, "GPSLongitude");
+
+                            if (lat && lon) {
+                                const latRef = EXIF.getTag(this, "GPSLatitudeRef") || "N";
+                                const lonRef = EXIF.getTag(this, "GPSLongitudeRef") || "W";
+                                const latitude = (lat[0] + lat[1]/60 + lat[2]/3600) * (latRef === "N" ? 1 : -1);
+                                const longitude = (lon[0] + lon[1]/60 + lon[2]/3600) * (lonRef === "W" ? -1 : 1);
+                                document.getElementById('location').value = `${latitude.toFixed(6)}, ${longitude.toFixed(6)}`;
+                            }
+                        });
                     }
 
                     reader.readAsDataURL(e.target.files[0]);
@@ -498,27 +631,216 @@
         };
 
         // Set up all image sections
-        ['before', 'during', 'after'].forEach(section => setupImageUpload(section));
+        // ['before', 'during', 'after'].forEach(section => setupImageUpload(section));
+        let photoSectionCounter = 0;
+
+        const addPhotoSection = () => {
+            photoSectionCounter++;
+            const photoSectionsContainer = document.getElementById('photo-sections-container');
+            const newPhotoSection = document.createElement('div');
+            newPhotoSection.className = 'flex flex-col space-y-4';
+            newPhotoSection.innerHTML = `
+                <h3 class="text-xl font-bold text-center text-blue-600">PHOTO ${photoSectionCounter}</h3>
+                <div class="photo-container">
+                    <div class="photo-placeholder w-full h-96 rounded-lg flex flex-col items-center justify-center" id="photo-placeholder-${photoSectionCounter}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                        <p class="text-gray-500 mt-2">Click to upload image</p>
+                    </div>
+                    <img class="uploaded-image hidden" id="photo-image-${photoSectionCounter}" alt="Photo ${photoSectionCounter}">
+                    <input type="file" accept="image/*" class="hidden" id="photo-upload-${photoSectionCounter}">
+                    <div class="delete-btn hidden" id="photo-delete-${photoSectionCounter}">✕</div>
+                </div>
+                <div>
+                    <label class="font-semibold text-gray-700 block mb-1">Description:</label>
+                    <textarea id="photo-desc-${photoSectionCounter}" class="form-textarea" rows="3" placeholder="Enter description..."></textarea>
+                </div>
+                <button class="remove-photo-section mt-2 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Remove</button>
+            `;
+            photoSectionsContainer.appendChild(newPhotoSection);
+            setupImageUpload(`photo-${photoSectionCounter}`);
+            newPhotoSection.querySelector('.remove-photo-section').addEventListener('click', () => {
+                newPhotoSection.remove();
+            });
+        };
+
+        document.getElementById('add-photo-section').addEventListener('click', addPhotoSection);
+
+        // Add initial photo sections
+        addPhotoSection();
+        addPhotoSection();
+        addPhotoSection();
+
+
+        const updatePreview = () => {
+            const formContainer = document.getElementById('form-container');
+            const previewIframe = document.getElementById('preview-iframe');
+            const previewContainer = document.getElementById('preview-container');
+
+            if (previewContainer.classList.contains('hidden')) {
+                return;
+            }
+
+            const clonedForm = formContainer.cloneNode(true);
+            clonedForm.classList.add('pdf-preview-mode');
+            const content = clonedForm.innerHTML;
+            previewIframe.srcdoc = `
+                <html>
+                    <head>
+                        <script src="https://cdn.tailwindcss.com"></script>
+                        <link rel="preconnect" href="https://fonts.googleapis.com">
+                        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+                        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+                        <style>
+                            body { font-family: 'Inter', sans-serif; }
+                            .pdf-preview-mode { padding: 20px; background-color: white; }
+                            .pdf-preview-mode .card { box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important; transform: none !important; }
+                            .pdf-preview-mode .step-circle { width: 1.8rem; height: 1.8rem; font-size: 1rem; }
+                            .pdf-preview-mode .text-2xl { font-size: 1.25rem; }
+                            .pdf-preview-mode .text-xl { font-size: 1.1rem; }
+                            .pdf-preview-mode .p-6 { padding: 1rem; }
+                            .pdf-preview-mode .gap-8 { gap: 1rem; }
+                            .pdf-preview-mode .gap-6 { gap: 0.75rem; }
+                            .pdf-preview-mode .h-96 { height: auto; }
+                            .pdf-preview-mode .mt-12 { margin-top: 1rem; }
+                            .pdf-preview-mode .space-y-12 > * + * { margin-top: 1rem; }
+                            .pdf-preview-mode .space-y-4 > * + * { margin-top: 0.5rem; }
+                            .pdf-preview-mode textarea { min-height: 60px; }
+                        </style>
+                    </head>
+                    <body>
+                        ${content}
+                    </body>
+                </html>
+            `;
+        };
+
+        document.getElementById('previewButton').addEventListener('click', () => {
+            const previewContainer = document.getElementById('preview-container');
+            previewContainer.classList.toggle('hidden');
+            updatePreview();
+        });
+
+        document.querySelectorAll('input, textarea, select').forEach(element => {
+            element.addEventListener('input', updatePreview);
+        });
+
+        const translations = {
+            en: {
+                "A Guide to Perfect Field Photo Documentation": "A Guide to Perfect Field Photo Documentation",
+                "Standardising photo reports for quality and completeness.": "Standardising photo reports for quality and completeness.",
+                "Core Activity Information": "Core Activity Information",
+                "Start by gathering all the essential details for the report. Complete data is the foundation of a successful report.": "Start by gathering all the essential details for the report. Complete data is the foundation of a successful report.",
+                "Work Order / Project No.": "Work Order / Project No.",
+                "Activity Title": "Activity Title",
+                "Responsible Department": "Responsible Department",
+                "Date of Activity": "Date of Activity",
+                "Exact Location": "Exact Location",
+                "Employee / Photographer": "Employee / Photographer",
+                "The Photo Story: Before, During, After": "The Photo Story: Before, During, After",
+                "Capture photos in a logical sequence to tell the complete story of the work performed.": "Capture photos in a logical sequence to tell the complete story of the work performed.",
+                "Add Photo": "Add Photo",
+                "Golden Rules for Photos": "Golden Rules for Photos",
+                "Quality:": "Quality:",
+                "Ensure photos are clear, in-focus, and well-lit.": "Ensure photos are clear, in-focus, and well-lit.",
+                "Context:": "Context:",
+                "Include fixed landmarks (columns, doors) to identify the exact location.": "Include fixed landmarks (columns, doors) to identify the exact location.",
+                "Sequence:": "Sequence:",
+                "Always capture photos in the logical \"Before, During, After\" order.": "Always capture photos in the logical \"Before, During, After\" order.",
+                "Additional Observations": "Additional Observations",
+                "Use this for unexpected or important findings.": "Use this for unexpected or important findings.",
+                "Type:": "Type:",
+                "Description:": "Description:",
+                "Purpose:": "Purpose:",
+                "To proactively document potential future issues.": "To proactively document potential future issues.",
+                "Clear photos and complete data are the foundation of a successful report.": "Clear photos and complete data are the foundation of a successful report.",
+                "Save as PDF": "Save as PDF",
+                "Clear Form": "Clear Form",
+                "Preview": "Preview",
+                "Toggle Dark Mode": "Toggle Dark Mode",
+                "PHOTO": "PHOTO"
+            },
+            ar: {
+                "A Guide to Perfect Field Photo Documentation": "دليل لتوثيق الصور الميدانية بشكل مثالي",
+                "Standardising photo reports for quality and completeness.": "توحيد تقارير الصور لضمان الجودة والاكتمال.",
+                "Core Activity Information": "معلومات النشاط الأساسية",
+                "Start by gathering all the essential details for the report. Complete data is the foundation of a successful report.": "ابدأ بجمع كل التفاصيل الأساسية للتقرير. البيانات الكاملة هي أساس التقرير الناجح.",
+                "Work Order / Project No.": "أمر العمل / رقم المشروع",
+                "Activity Title": "عنوان النشاط",
+                "Responsible Department": "القسم المسؤول",
+                "Date of Activity": "تاريخ النشاط",
+                "Exact Location": "الموقع الدقيق",
+                "Employee / Photographer": "الموظف / المصور",
+                "The Photo Story: Before, During, After": "القصة المصورة: قبل ، أثناء ، بعد",
+                "Capture photos in a logical sequence to tell the complete story of the work performed.": "التقط الصور في تسلسل منطقي لسرد القصة الكاملة للعمل المنجز.",
+                "Add Photo": "إضافة صورة",
+                "Golden Rules for Photos": "قواعد ذهبية للصور",
+                "Quality:": "الجودة:",
+                "Ensure photos are clear, in-focus, and well-lit.": "تأكد من أن الصور واضحة ومركزة ومضاءة جيدًا.",
+                "Context:": "السياق:",
+                "Include fixed landmarks (columns, doors) to identify the exact location.": "قم بتضمين معالم ثابتة (أعمدة ، أبواب) لتحديد الموقع الدقيق.",
+                "Sequence:": "التسلسل:",
+                "Always capture photos in the logical \"Before, During, After\" order.": "التقط الصور دائمًا بالترتيب المنطقي \"قبل ، أثناء ، بعد\".",
+                "Additional Observations": "ملاحظات إضافية",
+                "Use this for unexpected or important findings.": "استخدم هذا للنتائج غير المتوقعة أو المهمة.",
+                "Type:": "النوع:",
+                "Description:": "الوصف:",
+                "Purpose:": "الغرض:",
+                "To proactively document potential future issues.": "لتوثيق المشكلات المستقبلية المحتملة بشكل استباقي.",
+                "Clear photos and complete data are the foundation of a successful report.": "الصور الواضحة والبيانات الكاملة هي أساس التقرير الناجح.",
+                "Save as PDF": "حفظ بصيغة PDF",
+                "Clear Form": "مسح النموذج",
+                "Preview": "معاينة",
+                "Toggle Dark Mode": "تبديل الوضع الداكن",
+                "PHOTO": "صورة"
+            }
+        };
+
+        const languageSwitcher = document.getElementById('language-switcher');
+        languageSwitcher.addEventListener('change', (e) => {
+            const lang = e.target.value;
+            document.querySelectorAll('[data-translate]').forEach(element => {
+                const key = element.getAttribute('data-translate');
+                element.innerText = translations[lang][key];
+            });
+            document.documentElement.lang = lang;
+            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+        });
 
         // Save as PDF functionality
         document.getElementById('savePdfButton').addEventListener('click', function () {
-            const element = document.getElementById('full-page-content');
+            const element = document.getElementById('form-container');
             const loadingIndicator = document.getElementById('loading-indicator');
             const notification = document.getElementById('pdf-notification');
             const footer = document.getElementById('footer');
 
             // Validate required fields
+            const requiredFields = ['workOrder', 'activityTitle', 'department', 'activityDate', 'location', 'employeeName'];
+            let isValid = true;
+            requiredFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (!field.value) {
+                    field.classList.add('border-red-500');
+                    const error = document.createElement('p');
+                    error.className = 'text-red-500 text-xs italic';
+                    error.innerText = 'This field is required.';
+                    field.parentElement.appendChild(error);
+                    isValid = false;
+                } else {
+                    field.classList.remove('border-red-500');
+                    const error = field.parentElement.querySelector('.text-red-500');
+                    if (error) {
+                        error.remove();
+                    }
+                }
+            });
+
+            if (!isValid) {
+                return;
+            }
+
             const department = document.getElementById('department').value;
             const employeeName = document.getElementById('employeeName').value;
             const activityDate = document.getElementById('activityDate').value;
-            const workOrder = document.getElementById('workOrder').value;
-            const activityTitle = document.getElementById('activityTitle').value;
-            const location = document.getElementById('location').value;
-
-            if (!department || !employeeName || !activityDate || !workOrder || !activityTitle || !location) {
-                alert('Please fill in all required fields before generating PDF');
-                return;
-            }
 
             // Format date for filename (YYYYMMDD)
             const formattedDate = activityDate.replace(/-/g, '');
